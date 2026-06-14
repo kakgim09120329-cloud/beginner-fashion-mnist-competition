@@ -4,9 +4,10 @@ import pickle
 from pathlib import Path
 
 import numpy as np
+import torch
 
 from load_fashion_mnist import load_test_data
-from network import SimpleMLP
+from network import SimpleCNN
 
 WEIGHTS_PATH = Path("sample_weight.pkl")
 
@@ -19,9 +20,10 @@ def main() -> int:
     with WEIGHTS_PATH.open("rb") as f:
         state = pickle.load(f)
 
-    model = SimpleMLP.from_state(state)
+    model = SimpleCNN.from_state(state)
 
     x_test, t_test = load_test_data()
+    x_test = torch.from_numpy(x_test).to(torch.float32)
 
     pred = model.predict(x_test)
     acc = float(np.mean(pred == t_test))

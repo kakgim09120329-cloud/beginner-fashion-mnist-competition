@@ -9,7 +9,7 @@ VALID_SIZE = 10000
 SEED = 42
 SHUFFLE = True
 NORMALIZE = True
-FLATTEN = True
+FLATTEN = False
 
 LABEL_NAMES = [
     "T-shirt/top",
@@ -53,6 +53,8 @@ def _preprocess_images(images: np.ndarray) -> np.ndarray:
     out = images
     if FLATTEN:
         out = out.reshape(out.shape[0], -1)
+    else:
+        out = out.reshape(out.shape[0], 1, out.shape[1], out.shape[2])
     if NORMALIZE:
         out = out.astype(np.float32) / 255.0
     return out
